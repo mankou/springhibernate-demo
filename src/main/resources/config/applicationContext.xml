@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd      
+    http://www.springframework.org/schema/context      
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd 
+    http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd      
+    http://www.springframework.org/schema/mvc      
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- 支持注解 -->
+
+	<!--自动装配DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter -->
+	
+	<context:component-scan base-package="mang.demo.springhibernate"/>
+
+	<!-- 扫描路由路径 -->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521:ORCL" />
+		<property name="user" value="yh" />
+		<property name="password" value="yh" />
+		<property name="initialPoolSize" value="3"/> 
+		<property name="minPoolSize" value="2" />
+		<property name="maxPoolSize" value="5" />
+		<property name="maxStatements" value="100" />
+		<property name="maxIdleTime" value="600"/>  
+		<property name="acquireIncrement" value="5"/>  
+		<property name="idleConnectionTestPeriod" value="900" />
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">  
+            <value>mang.demo.springhibernate.entity</value>  
+        </property>  
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.use_sql_comments">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="dataSource" > 
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	
+	<!-- 支持事务 @Transactional 标记 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	
+	
+	<bean id="springContext" class="mang.demo.springhibernate.util.SpringContext"></bean>
+</beans>
