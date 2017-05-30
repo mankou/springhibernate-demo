@@ -1,12 +1,8 @@
 package mang.demo.springhibernate;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +32,7 @@ public class App
         
         //优先从工作空间的 conf config目录下取 如果取不到,再从类路径下取
         String springXmlParentPath=ConfigUtil.getConfigPathFromDefault("config/applicationContext.xml","classpath:config/applicationContext.xml");
+        //XXX 对于maven打出的shade包 则用java -jar 启动就会报错  目前我是用分发包所以没有问题
 		ApplicationContext ctx = new FileSystemXmlApplicationContext(springXmlParentPath);
 		
 		TestBO testBO=(TestBO) ctx.getBean("testBO");
