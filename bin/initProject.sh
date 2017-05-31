@@ -6,7 +6,7 @@
 # ./initProject.sh
 
 author=man003@163.com
-version=V1.0-20170526
+version=V1.0-20170530
 
 # 脚本当前路径
 SHELL_PATH=$(cd $(dirname "$0");pwd)
@@ -24,6 +24,9 @@ group_id_old=mang.demo
 
 # 原工程中包名前缀
 package_old=mang.demo.springhibernate
+
+# 原工程中主类路径
+main_class_old=mang.demo.springhibernate.App
 
 # 原工程中开发代码的路径前缀
 java_path_prefix_develop=src/main/java
@@ -43,9 +46,6 @@ packageFilePathOld=`echo "$package_old" | sed 's#\.#/#g'`
 javaPathOld_develop=${java_path_prefix_develop}/$packageFilePathOld
 javaPathOld_test=${java_path_prefix_test}/$packageFilePathOld
 
-# 需要处理的工程
-projects="common server web"
-
 # 定义新工程相关变量默认值
 # 注这些变量可通过 init.config 文件覆盖默认值
 
@@ -58,14 +58,17 @@ group_id_new=com.mtest
 # 新工程包名 
 package_new=com.mtest
 
+# 新工程主类路径
+main_class_old=com.mtest.App
+
 
 # 处理开发代码java路径
 # 将java文件移动到新路径并删除原路径
 processJavaPath_develop() {
     local project=$1
-    local javaPathFrom=${PARENT_PATH}/${project_name_new}-$project/${javaPathOld_develop}
-    local javaPathTo=${PARENT_PATH}/${project_name_new}-$project/${javaPathNew_develop}
-
+    local javaPathFrom=${PARENT_PATH}/${javaPathOld_develop}
+    local javaPathTo=${PARENT_PATH}/${javaPathNew_develop}
+    
     if [ -d $javaPathFrom ]
     then
         if [ ! -d ${javaPathTo}  ]
@@ -74,7 +77,7 @@ processJavaPath_develop() {
         fi
         mv $javaPathFrom/* $javaPathTo
 
-        local javaPathFromRoot=${PARENT_PATH}/${project_name_new}-$project/$javaRootPath_develop
+        local javaPathFromRoot=${PARENT_PATH}/$javaRootPath_develop
         if [ -d ${javaPathFromRoot} ]
         then
             rm -rf $javaPathFromRoot
@@ -85,9 +88,8 @@ processJavaPath_develop() {
 # 处理测试代码java路径
 # 将java文件移动到新路径并删除原路径
 processJavaPath_test() {
-    local project=$1
-    local javaPathFrom=${PARENT_PATH}/${project_name_new}-$project/${javaPathOld_test}
-    local javaPathTo=${PARENT_PATH}/${project_name_new}-$project/${javaPathNew_test}
+    local javaPathFrom=${PARENT_PATH}/${javaPathOld_test}
+    local javaPathTo=${PARENT_PATH}/${javaPathNew_test}
 
     if [ -d $javaPathFrom ]
     then
@@ -97,7 +99,7 @@ processJavaPath_test() {
         fi
         mv $javaPathFrom/* $javaPathTo
 
-        local javaPathFromRoot=${PARENT_PATH}/${project_name_new}-$project/$javaRootPath_test
+        local javaPathFromRoot=${PARENT_PATH}/$javaRootPath_test
         if [ -d ${javaPathFromRoot} ]
         then
             rm -rf $javaPathFromRoot
@@ -142,30 +144,16 @@ then
     rm -rf $svnPath
 fi
 
-echo 正在处理 工程目录名
-for proj in $projects
-do
-    mv $PARENT_PATH/${project_name_old}-${proj} $PARENT_PATH/${project_name_new}-${proj}
-    #mv $PARENT_PATH/springmvc-demo-server $PARENT_PATH/$project_name_new-server
-done
 
 echo 正在处理 java文件存储路径
-for proj in $projects
-do
-    #echo 正在处理develop $proj
-    processJavaPath_develop $proj
+processJavaPath_develop $proj
+processJavaPath_test $proj
 
-    #echo 正在处理test $proj
-    processJavaPath_test $proj
-done
 
 echo 正在处理 java文件包路径
 find . -name "*.java" |xargs sed -ig "s/$package_old/$package_new/g"
 find . -name "*.javag" |xargs -n5 rm -rf
 
-echo 正在处理 controller中的链接注释
-find . -name "*Controller.java" |xargs sed -ig "s/$project_name_old/$project_name_new/g"
-find . -name "*Controller.javag" |xargs -n5 rm -rf
 
 echo 正在处理 .project
 find . -name "*.project" |xargs sed -ig "s/$project_name_old/$project_name_new/g"
@@ -173,19 +161,14 @@ find . -name "*.projectg" |xargs -n5 rm -rf
 
 echo 正在处理 pom.xml
 find . -name "pom.xml" |xargs sed -ig "s/$project_name_old/$project_name_new/g"
-find . -name "pom.xml" |xargs sed -ig "s/$group_id_old/$group_id_old/g"
+find . -name "pom.xml" |xargs sed -ig "s/$group_id_old/$group_id_new/g"
+find . -name "pom.xml" |xargs sed -ig "s/$main_class_old/$main_class_new/g"
 find . -name "pom.xmlg" |xargs -n5 rm -rf
 
 echo 正在处理 xml文件
-find . -name "applicationContext-local.xml" |xargs sed -ig "s/$package_old/$package_new/g"
-find . -name "mvc-dispatcher-servlet.xml" |xargs sed -ig "s/$package_old/$package_new/g"
-find . -name "*applicationContext-local.xmlg" |xargs  -n5 rm -rf
-find . -name "*mvc-dispatcher-servlet.xmlg" |xargs  -n5 rm -rf
-
-# org.eclipse.wst.common.component
-echo 正在处理 org.eclipse.wst.common.component
-find . -name "org.eclipse.wst.common.component" |xargs sed -ig "s/$project_name_old/$project_name_new/g"
-find . -name "org.eclipse.wst.common.componentg" |xargs -n5 rm -rf
+find . -name "applicationContext.xml" |xargs sed -ig "s/$package_old/$package_new/g"
+find . -name "*applicationContext.xmlg" |xargs  -n5 rm -rf
+exit
 
 echo
 echo done.
