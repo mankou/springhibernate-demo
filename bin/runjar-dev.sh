@@ -59,7 +59,7 @@ case "$1" in
             sleep $delaySeconds
             echo "start ..."
             #echo "java $JVM_OPT -jar $jarAbsolutePath &"
-            nohup java -Dservice.env=pro $JVM_OPT -jar $jarAbsolutePath &
+            nohup java $JVM_OPT -jar $jarAbsolutePath &
             process=`ps -ef|grep $jarAbsolutePath |grep -v "grep"|awk '{print $2}'`
             echo started pid $process
         else

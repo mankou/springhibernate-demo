@@ -7,5 +7,5 @@ echo path:%~dp0
 ::因一般脚本都放在bin 而jar包放在根目录下 所以这里切换到根目录下
 %~d0
 cd %~dp0%\..
-java -Dservice.env=pro -jar lib/pszxjob-0.0.1-SNAPSHOT.jar 
+java -Dservice.env=test -jar lib/pszxjob-0.0.1-SNAPSHOT.jar 
 @pause
