@@ -7,14 +7,13 @@ import org.hibernate.type.LongType;
 import org.springframework.stereotype.Repository;
 
 import mang.demo.springhibernate.dao.TestDAO;
-import mang.demo.springhibernate.dao.base.HibernateDaoBase;
 import mang.demo.springhibernate.entity.TestUser;
 
 
 
 
 @Repository
-public class TestDAOImpl extends HibernateDaoBase implements TestDAO {
+public class TestDAOImpl extends BaseDAOImpl<TestUser> implements TestDAO {
 
 	@Override
 	public List queryTest() {
