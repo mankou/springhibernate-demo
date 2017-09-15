@@ -28,4 +28,7 @@ public interface BaseDAO<T> {
 	 
 	 public List<T> findByHQL(String hql, Object... params);
 	 
+	 
+	 public <T> List<T> queryAll(T clazz);
+	 
 }

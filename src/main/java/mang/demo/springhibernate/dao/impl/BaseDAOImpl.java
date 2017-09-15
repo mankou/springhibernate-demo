@@ -26,9 +26,7 @@ public class BaseDAOImpl<T> extends HibernateDaoSupport implements BaseDAO<T> {
 	}
 
 	public BaseDAOImpl() {
-		// ParameterizedType type =
-		// (ParameterizedType)this.getClass().getGenericSuperclass();
-		// clazz = (Class) type.getActualTypeArguments()[0];
+		
 	}
 
 	/**
@@ -161,6 +159,15 @@ public class BaseDAOImpl<T> extends HibernateDaoSupport implements BaseDAO<T> {
 		for(T t:list){
 			this.delete(t);
 		}
+	}
+
+	@Override
+	public <T> List<T> queryAll(T clazz) {
+		String clazzName = clazz.getClass().getSimpleName();
+		String hql = "from " + clazzName+"";
+		Query query=this.getSession().createQuery(hql);
+		List lis=query.list();
+		return lis;
 	}
 
 }
