@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <!--定义jobDetail-->
+    <bean id="simpleJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="myBean" />
+        <property name="targetMethod" value="printMessage" />
+    </bean>
+    
+     <!--定义jobDetail-->
+    <bean id="cronJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="myBean" />
+        <property name="targetMethod" value="printMessage" />
+    </bean>
+    
+
+    <!-- Run the job every 2 seconds with initial delay of 1 second -->
+    <bean id="simpleTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="simpleJobDetail" />
+        <property name="startDelay" value="1000" />
+        <property name="repeatInterval" value="2000" />
+    </bean>
+    
+    <!--cronTrigger-->
+    <bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="cronJobDetail" />  
+        <property name="cronExpression" value="0/6 * * ? * *" />  
+    </bean>  
+
+
+   
+    <!-- Scheduler factory bean to glue together jobDetails and triggers to 
+        Configure Quartz Scheduler -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"/>
+                <ref bean="simpleTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>
