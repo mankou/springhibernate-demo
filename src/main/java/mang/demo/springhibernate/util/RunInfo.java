@@ -12,6 +12,15 @@ public class RunInfo {
 		return instance;
 	}
 	
+	/**
+	 * 获取运行信息字符串
+	 * */
+	public static String getRunInfoStr(){
+		RunInfo runInfo=RunInfo.getInstance();
+		String runInfoStr=runInfo.getInfo();
+		return runInfoStr;
+	}
+	
 	private RunInfo() {
 		startTime=new Date();
 		runCount=0L;
@@ -21,9 +30,8 @@ public class RunInfo {
 	
 	private Long runCount;
 
-
-
-	public String getRunInfoStr(){
+	
+	private String getInfo(){
 		Date endTime=new Date();
 		String startTimeStr=DateUtil.getDateString(startTime);
 		String runTimeStr=DateUtil.computeTimeInterval(endTime, startTime, "en");

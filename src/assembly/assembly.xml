@@ -6,11 +6,42 @@
 	<formats>
 		<format>zip</format>
 	</formats>
+	
+	<!-- 将不同环境的配置文件打到分发包里  如下只是示例如何将单个的文件拷备到指定目录 并且还能修改文件名-->
+	<!--  
+	<files>
+		<file>
+			<source>src/main/resources/config/dev/setting.properties</source>
+			<outputDirectory>\config</outputDirectory>
+			<destName>setting-dev.properties</destName>
+		</file>
+		<file>
+			<source>src/main/resources/config/test/setting.properties</source>
+			<outputDirectory>\config</outputDirectory>
+			<destName>setting-test.properties</destName>
+		</file>
+		<file>
+			<source>src/main/resources/config/pro/setting.properties</source>
+			<outputDirectory>\config</outputDirectory>
+			<destName>setting-pro.properties</destName>
+		</file>
+		<file>
+			<source>src/main/resources/config/cut/setting.properties</source>
+			<outputDirectory>\config</outputDirectory>
+			<destName>setting-cut.properties</destName>
+		</file>
+	</files>
+	-->
+	
+	
 	<fileSets>
+		<!-- 因目前我都从classpath中取配置文件 所以没必要暴露出来了 所以不需要拷备了 -->
+		<!--  
 		<fileSet>
 			<directory>${project.basedir}\src\main\resources</directory>
 			<outputDirectory>\</outputDirectory>
 		</fileSet>
+		-->
 		<!-- 把bin目录放到分发包的bin目录下 该目录下是启动脚本 -->
 		<fileSet>
 			<directory>${project.basedir}\bin</directory>

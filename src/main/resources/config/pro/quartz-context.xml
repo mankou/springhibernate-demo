@@ -28,7 +28,7 @@
     <!--cronTrigger-->
     <bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
         <property name="jobDetail" ref="cronJobDetail" />  
-        <property name="cronExpression" value="0/6 * * ? * *" />  
+        <property name="cronExpression" value="0/6 * * * * ?" />  
     </bean>  
 
 
