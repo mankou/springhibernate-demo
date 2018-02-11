@@ -14,20 +14,28 @@
     http://www.springframework.org/schema/mvc      
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<!-- 支持注解 -->
-
-	<!--自动装配DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter -->
 	
+	
+	<!-- 扫描路径 -->
 	<context:component-scan base-package="mang.demo.springhibernate"/>
+	
+	<!-- 如下指定classpath中的路径 已测试ok,如果不需要使用setting.properties则可以不引入,免得在eclipse中启动还要配置config.path -->
+	<context:property-placeholder location="classpath:config/dev/jdbc.properties"/>
+	<!-- <context:property-placeholder location="classpath:config/dev/jdbc.properties,file:${config.path}"/> -->
+	
+	<!-- 如下本想指定相对路径 但目前测试还不完善   -->
+	<!-- <context:property-placeholder location="file:./setting.properties"/> -->
+	
+	<!-- 如下指定外置路径 -->
+	<!-- <context:property-placeholder location="file:${config.path}"/> -->
 
-	<!-- 扫描路由路径 -->
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
-		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521:ORCL" />
-		<property name="user" value="test" />
-		<property name="password" value="test" />
+		<property name="driverClass" value="${datasource.driverClass}" />
+		<property name="jdbcUrl" value="${datasource.jdbcUrl}" />
+		<property name="user" value="${datasource.user}" />
+		<property name="password" value="${datasource.password}" />
 		<property name="initialPoolSize" value="3"/> 
 		<property name="minPoolSize" value="2" />
 		<property name="maxPoolSize" value="5" />
@@ -45,8 +53,8 @@
         </property>  
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.dialect">${datasource.hibernate.dialect}</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.use_sql_comments">false</prop>
 			</props>

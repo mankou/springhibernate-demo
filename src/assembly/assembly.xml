@@ -8,30 +8,30 @@
 	</formats>
 	
 	<!-- 将不同环境的配置文件打到分发包里  如下只是示例如何将单个的文件拷备到指定目录 并且还能修改文件名-->
-	<!--  
+	 
 	<files>
 		<file>
 			<source>src/main/resources/config/dev/setting.properties</source>
 			<outputDirectory>\config</outputDirectory>
 			<destName>setting-dev.properties</destName>
 		</file>
-		<file>
+		<!-- <file>
 			<source>src/main/resources/config/test/setting.properties</source>
 			<outputDirectory>\config</outputDirectory>
 			<destName>setting-test.properties</destName>
-		</file>
-		<file>
+		</file> -->
+		<!-- <file>
 			<source>src/main/resources/config/pro/setting.properties</source>
 			<outputDirectory>\config</outputDirectory>
 			<destName>setting-pro.properties</destName>
-		</file>
-		<file>
+		</file> -->
+		<!-- <file>
 			<source>src/main/resources/config/cut/setting.properties</source>
 			<outputDirectory>\config</outputDirectory>
 			<destName>setting-cut.properties</destName>
-		</file>
+		</file> -->
 	</files>
-	-->
+	
 	
 	
 	<fileSets>

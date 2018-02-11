@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE xml>
+<Configuration status="warn" name="MyApp">
+	<Properties>
+		<Property name="baseDir">log</Property>
+	</Properties>
+
+	<appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+		</Console>
+
+		<RollingFile name="dailyLog" fileName="${baseDir}/dailyLog.log"
+			filePattern="${baseDir}/dailyLog.%d{yyyy-MM-dd}.log" append="true">
+			<ThresholdFilter level="info" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="1">
+					<IfFileName glob="dailyLog.*.log">
+						<IfLastModified age="20d">
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<RollingFile name="dailyLog_debug" fileName="${baseDir}/dailyLog_debug.log"
+			filePattern="${baseDir}/dailyLog.%d{yyyy-MM-dd}.log" append="true">
+			<ThresholdFilter level="debug" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="1">
+					<IfFileName glob="dailyLog_debug.*.log">
+						<IfLastModified age="20d">
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<RollingFile name="dailyLog_warn" fileName="${baseDir}/dailyLog_warn.log"
+			filePattern="${baseDir}/dailyLog.%d{yyyy-MM-dd}.log" append="true">
+			<ThresholdFilter level="warn" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="1">
+					<IfFileName glob="dailyLog_warn.*.log">
+						<IfLastModified age="20d">
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<RollingFile name="dailyLog_error" fileName="${baseDir}/dailyLog_error.log"
+			filePattern="${baseDir}/dailyLog.%d{yyyy-MM-dd}.log" append="true">
+			<ThresholdFilter level="error" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="1">
+					<IfFileName glob="dailyLog_error.*.log">
+						<IfLastModified age="20d">
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<RollingRandomAccessFile name="lastRollLog"
+			fileName="${baseDir}/lastRollLog.log" filePattern="${baseDir}/lastRollLog.log.%i"
+			append="false">
+			<ThresholdFilter level="info" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="5MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingRandomAccessFile>
+
+		<RollingRandomAccessFile name="lastRollLog_debug"
+			fileName="${baseDir}/lastRollLog_debug.log" filePattern="${baseDir}/lastRollLog_debug.log.%i"
+			append="false">
+			<ThresholdFilter level="debug" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="5MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="2" />
+		</RollingRandomAccessFile>
+
+		<RollingRandomAccessFile name="rollLog"
+			fileName="${baseDir}/rollLog.log" filePattern="${baseDir}/rollLog.log.%i">
+			<ThresholdFilter level="info" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingRandomAccessFile>
+
+		<File name="testLog" fileName="${baseDir}/test.log" append="false">
+			<ThresholdFilter level="info" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+		</File>
+
+		<File name="testLog_debug" fileName="${baseDir}/test_debug.log"
+			append="false">
+			<ThresholdFilter level="debug" />
+			<PatternLayout charset="UTF-8"
+				pattern="%d{yyyy-MM-dd HH:mm:ss}>>%5p>>%C{1}.%M %L>> %m%ex%n" />
+		</File>
+
+	</appenders>
+
+	<loggers>
+		<!-- 第三方的软件日志级别 -->
+		<logger name="org.springframework" level="info" additivity="true">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="dailyLog" />
+		</logger>
+
+		<logger name="java.sql.PreparedStatement" level="info"
+			additivity="true">
+			<AppenderRef ref="console" />
+		</logger>
+
+
+		<!--root logger配置 -->
+		<root level="info">
+			<appender-ref ref="console" />
+			<appender-ref ref="dailyLog" />
+		</root>
+	</loggers>
+</Configuration> 
